@@ -1,0 +1,15 @@
+{{ $root := . }}
+{{- range .Values.issuers }}
+---
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: {{ .kind }}
+metadata:
+  labels:
+{{- include "cert-manager-umbrella.labels" $root | nindent 4 }}
+  name: {{ .name }}
+{{- if .namespace }}
+  namespace: {{ .namespace }}
+{{- end }}
+spec:
+{{ toYaml .spec | indent 2 }}
+{{- end -}}
