@@ -25,7 +25,7 @@ dist-repo:
 build: dist-repo
 	cd package && \
 		docker-compose build && \
-		docker-compose run --rm package package.sh "${CHARTS_URL}" dist-repo && \
+		docker-compose run --rm package ./package/package.sh "${CHARTS_URL}" dist-repo && \
 		cd ../dist-repo && \
 		echo "--- Diff" && \
 		git diff --stat
