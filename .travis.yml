@@ -1,0 +1,27 @@
+dist: xenial
+sudo: true
+
+install: true
+
+notifications:
+  email: false
+
+services:
+  - docker
+
+script:
+  - make lint
+
+branches:
+  only:
+  - master
+
+env:
+  - GIT_AUTHOR_NAME="Koalification CI" GIT_AUTHOR_EMAIL="infra@koalification.io"
+
+deploy:
+  - provider: script
+    skip_cleanup: true
+    script: make build release
+    on:
+      branch: master
