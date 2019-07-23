@@ -1,15 +1,19 @@
 #!/usr/bin/env bash
 # USAGE: package.sh <helm-repo-url> <output-dir>
 
-set -euo pipefail
+set -eo pipefail
 
 HELM_REPO_URL="$1"
 OUTPUT_DIR="$2"
 
-for chart in ./stable/*; do
+ct lint --config "${BASH_SOURCE[0]%/*}/../test/ct.yaml"
+
+charts=$(ct list-changed --config "${BASH_SOURCE[0]%/*}/../test/ct.yaml")
+
+for chart in $charts; do
   echo "--- Packaging $chart into $OUTPUT_DIR"
-  helm dep update "$chart" || true
-  helm package --destination "$OUTPUT_DIR" "$chart"
+  helm dep update "./$chart" || true
+  helm package --destination "$OUTPUT_DIR" "./$chart"
 done
 
 echo "--- Reindexing $OUTPUT_DIR"
