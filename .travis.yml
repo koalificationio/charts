@@ -22,6 +22,6 @@ env:
 deploy:
   - provider: script
     skip_cleanup: true
-    script: make build release
+    script: make release
     on:
       branch: master
