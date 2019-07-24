@@ -1,19 +1,20 @@
 #!/usr/bin/env bash
 # USAGE: package.sh <helm-repo-url> <output-dir>
 
-set -eo pipefail
+set -euo pipefail
 
 HELM_REPO_URL="$1"
 OUTPUT_DIR="$2"
 
-ct lint --config "${BASH_SOURCE[0]%/*}/../test/ct.yaml"
+helm init --client-only
 
-charts=$(ct list-changed --config "${BASH_SOURCE[0]%/*}/../test/ct.yaml")
+# add helm repos for charts in requirements
+helm repo add jetstack https://charts.jetstack.io/
 
-for chart in $charts; do
+for chart in ./stable/*; do
   echo "--- Packaging $chart into $OUTPUT_DIR"
-  helm dep update "./$chart" || true
-  helm package --destination "$OUTPUT_DIR" "./$chart"
+  helm dep update "$chart" || true
+  helm package --destination "$OUTPUT_DIR" "$chart"
 done
 
 echo "--- Reindexing $OUTPUT_DIR"
