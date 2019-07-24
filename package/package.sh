@@ -11,6 +11,8 @@ helm init --client-only
 # add helm repos for charts in requirements
 helm repo add jetstack https://charts.jetstack.io/
 
+mkdir -p "${OUTPUT_DIR}"
+
 for chart in ./stable/*; do
   echo "--- Packaging $chart into $OUTPUT_DIR"
   helm dep update "$chart" || true

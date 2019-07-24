@@ -1,5 +1,5 @@
 name: cert-manager-umbrella
-version: 0.1.9
+version: 0.1.10
 appVersion: 0.8.0
 description: cert-manager CRDs and issuers
 home: https://github.com/koalificationio/charts
