@@ -13,7 +13,7 @@ hub:
 
   ## Specify secrets to pull images from private repositories
   ## ref: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
-  #imagePullSecret: "secret1"
+  # imagePullSecret: "secret1"
 
   podAnnotations: {}
 
