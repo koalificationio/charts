@@ -8,7 +8,7 @@ Some missing/fixed helm charts we've created that made no sense to be contribute
 
 Get the latest [Helm release](https://github.com/kubernetes/helm#install).
 
-### Add Buildkite Helm chart repository:
+### Add Helm chart repository:
 
 ```console
 helm repo add koalificationio https://koalificationio.github.io/charts/
