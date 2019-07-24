@@ -2,9 +2,9 @@ apiVersion: v1
 entries:
   cert-manager-umbrella:
   - appVersion: 0.8.0
-    created: 2019-07-24T13:12:37.634652664Z
+    created: 2019-07-24T13:57:58.715280463Z
     description: cert-manager CRDs and issuers
-    digest: 598f64144ea31d31bead4894ed216c52a19094da51497f65d134248c33604d57
+    digest: fe27f13c6a0e8d8860be2a8689e6dabed6ac834908f3e4dc9709bfdeae89e629
     home: https://github.com/koalificationio/charts
     maintainers:
     - email: artem@koalification.io
@@ -15,9 +15,9 @@ entries:
     version: 0.1.10
   zalenium:
   - appVersion: 3.141.59
-    created: 2019-07-24T13:12:37.635403538Z
+    created: 2019-07-24T13:57:58.716024361Z
     description: Chart for selenium grid
-    digest: 742506e19dceb84568a290d12dce7c81d3770c76cb4ba432d0cd503a0f78e7fd
+    digest: 6e239beedeb7e862946872a85131072df961c3d92a66755aee0b0b6798785c63
     engine: gotpl
     home: https://github.com/zalando/zalenium
     keywords:
@@ -29,6 +29,6 @@ entries:
     sources:
     - https://github.com/zalando/zalenium
     urls:
-    - https://koalificationio.github.io/charts/zalenium-3.141.59-1.tgz
-    version: 3.141.59-1
-generated: 2019-07-24T13:12:37.632222974Z
+    - https://koalificationio.github.io/charts/zalenium-3.141.59-2.tgz
+    version: 3.141.59-2
+generated: 2019-07-24T13:57:58.712471165Z
