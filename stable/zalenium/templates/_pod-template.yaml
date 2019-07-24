@@ -116,7 +116,7 @@ spec:
           value: {{ .Values.hub.retentionPeriod | quote }}
         {{- if .Values.ingress.path }}
         - name: CONTEXT_PATH
-          value: {{- if eq .Values.ingress.path "/*") }}"/"{{ else }}{{ .Values.ingress.path | quote }} # FIXME
+          value: {{- if eq .Values.ingress.path "/*" }}"/"{{ else }}{{ .Values.ingress.path | quote }} # FIXME
         {{- end }}
         {{- if .Values.ingress.maxBodySize }}
         - name: NGINX_MAX_BODY_SIZE
