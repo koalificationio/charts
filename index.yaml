@@ -2,9 +2,9 @@ apiVersion: v1
 entries:
   cert-manager-umbrella:
   - appVersion: 0.8.0
-    created: 2019-07-24T06:02:38.513695876Z
+    created: 2019-07-24T13:12:37.634652664Z
     description: cert-manager CRDs and issuers
-    digest: 970ed516bb15fc87ae149ec8e2aa5d4a6293cb961e6e38b9130af5546ee07656
+    digest: 598f64144ea31d31bead4894ed216c52a19094da51497f65d134248c33604d57
     home: https://github.com/koalificationio/charts
     maintainers:
     - email: artem@koalification.io
@@ -13,4 +13,22 @@ entries:
     urls:
     - https://koalificationio.github.io/charts/cert-manager-umbrella-0.1.10.tgz
     version: 0.1.10
-generated: 2019-07-24T06:02:38.510198417Z
+  zalenium:
+  - appVersion: 3.141.59
+    created: 2019-07-24T13:12:37.635403538Z
+    description: Chart for selenium grid
+    digest: 742506e19dceb84568a290d12dce7c81d3770c76cb4ba432d0cd503a0f78e7fd
+    engine: gotpl
+    home: https://github.com/zalando/zalenium
+    keywords:
+    - qa
+    maintainers:
+    - email: diemol@gmail.com
+      name: diemol
+    name: zalenium
+    sources:
+    - https://github.com/zalando/zalenium
+    urls:
+    - https://koalificationio.github.io/charts/zalenium-3.141.59-1.tgz
+    version: 3.141.59-1
+generated: 2019-07-24T13:12:37.632222974Z
