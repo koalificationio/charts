@@ -10,18 +10,17 @@ services:
   - docker
 
 script:
-  - make lint
+  - make build
 
 branches:
   only:
   - master
 
-env:
-  - GIT_AUTHOR_NAME="Koalification CI" GIT_AUTHOR_EMAIL="infra@koalification.io"
-
 deploy:
-  - provider: script
+  - provider: pages
     skip_cleanup: true
-    script: make release
+    github_token: $GITHUB_TOKEN
+    local_dir: dist-repo
+    committer_from_gh: true
     on:
       branch: master
