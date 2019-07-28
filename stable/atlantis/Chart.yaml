@@ -1,0 +1,8 @@
+name: atlantis
+version: 0.1.0
+appVersion: 0.8.3
+description: Atlantis flow for Terraform
+home: https://github.com/koalificationio/charts
+maintainers:
+- name: gordonbondon
+  email: artem@koalification.io

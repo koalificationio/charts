@@ -1,0 +1,14 @@
+{{- if .Values.serverSide.enabled -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "atlantis.fullname" . }}-serverside-config
+  labels:
+    app: {{ template "atlantis.name" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+data:
+  repos.yaml: |
+{{ printf .Values.serverSide.config | indent 4 }}
+{{- end -}}

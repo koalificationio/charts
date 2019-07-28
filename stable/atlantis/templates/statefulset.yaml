@@ -1,0 +1,252 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ template "atlantis.fullname" . }}
+  labels:
+    app: {{ template "atlantis.name" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+{{- if .Values.extraLabels }}
+{{ toYaml .Values.extraLabels | indent 4 }}
+{{- end }}
+spec:
+  serviceName: {{ template "atlantis.fullname" . }}
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "atlantis.name" . }}
+      release: {{ .Release.Name }}
+  updateStrategy:
+    type: {{ .Values.updateStrategy }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/serverside_config: {{ include (print $.Template.BasePath "/serverside_config.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+        checksum/secret-git: {{ include (print $.Template.BasePath "/secret-git.yaml") . | sha256sum }}
+        checksum/secret-ssh: {{ include (print $.Template.BasePath "/secret-ssh.yaml") . | sha256sum }}
+        checksum/secret-relay: {{ include (print $.Template.BasePath "/secret-relay.yaml") . | sha256sum }}
+      {{- range $key, $value := .Values.podAnnotations }}
+        {{ $key }}: {{ $value | quote }}
+      {{- end }}
+      labels:
+        app: {{ template "atlantis.name" . }}
+        chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+        release: "{{ .Release.Name }}"
+        heritage: "{{ .Release.Service }}"
+{{- if .Values.extraLabels }}
+{{ toYaml .Values.extraLabels | indent 8 }}
+{{- end }}
+    spec:
+{{- if .Values.image.pullSecrets }}
+      imagePullSecrets:
+      {{- range $pullSecret := .Values.image.pullSecrets }}
+        - name: {{ $pullSecret }}
+      {{- end }}
+{{- end }}
+      securityContext:
+        fsGroup: 1000
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      serviceAccountName: {{ if .Values.rbac.create }}{{ template "atlantis.fullname" . }}{{ else }}"{{ .Values.rbac.serviceAccountName }}"{{ end }}
+      {{- if .Values.tolerations }}
+      tolerations:
+{{ toYaml .Values.tolerations | indent 8 }}
+      {{- end }}
+      {{- if .Values.affinity }}
+      affinity:
+{{ toYaml .Values.affinity | indent 8 }}
+      {{- end }}
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+      {{- end }}
+      {{- if .Values.gitSsh.create -}}
+      initContainers:
+        - name: copy-chown-ssh
+          image: busybox
+          command: ['sh', '-c', 'cp /ssh/* /.ssh; chown 100:1000 /.ssh/id_rsa_ci_bot; chmod 400 /.ssh/id_rsa_ci_bot']
+          volumeMounts:
+            - name: {{ template "atlantis.fullname" . }}-secret-ssh-volume
+              mountPath: /ssh
+            - name: {{ template "atlantis.fullname" . }}-ssh-pv
+              mountPath: /.ssh
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if .Values.gitConfig.create }}
+          lifecycle:
+            postStart:
+              exec:
+                command: ["/bin/sh", "-c", "cp /etc/secret-gitconfig/config /home/atlantis/.gitconfig && chown atlantis /home/atlantis/.gitconfig"]
+          {{- end }}
+          {{- if .Values.serverSide.enabled }}
+          args:
+            - server
+            - --repo-config=/home/atlantis/repos.yaml
+          {{- end }}
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+          livenessProbe:
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+            httpGet:
+              path: /healthz
+              port: 4141
+              scheme: HTTP
+          readinessProbe:
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+            httpGet:
+              path: /healthz
+              port: 4141
+              scheme: HTTP
+          env:
+          - name: ATLANTIS_DATA_DIR
+            value: /atlantis
+          - name: ATLANTIS_PORT
+            value: "4141"
+            {{- range $name, $value := .Values.extraEnv }}
+              - name: {{ $name }}
+                value: {{ quote $value }}
+            {{- end }}
+          envFrom:
+          - configMapRef:
+              name: {{ template "atlantis.fullname" . }}
+          - secretRef:
+              name: {{ template "atlantis.fullname" . }}
+          volumeMounts:
+          - name: {{ template "atlantis.fullname" . }}-data
+            mountPath: /atlantis
+          {{- if .Values.gitSsh.create -}}
+          - name: {{ template "atlantis.fullname" . }}-ssh-pv
+            mountPath: /home/atlantis/.ssh
+          {{- end }}
+          {{- if .Values.gitConfig.create }}
+          - name: {{ template "atlantis.fullname" . }}-git-config
+            readOnly: true
+            mountPath: /etc/secret-gitconfig
+          {{- end }}
+          {{- if .Values.serverSide.enabled }}
+          - name: serverside-config
+            readOnly: true
+            mountPath: /home/atlantis/repos.yaml
+            subPath: repos.yaml
+          {{- end }}
+          {{- if .Values.logStreaming.enabled }}
+          - name: logs
+            mountPath: /logs
+          {{- end }}
+          ports:
+          - name: atlantis
+            containerPort: 4141
+        {{- if .Values.logStreaming.enabled }}
+        - name: webtail
+          image: {{ .Values.logStreaming.image.repository }}:{{ .Values.logStreaming.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - --root=/logs
+          volumeMounts:
+          - name: logs
+            mountPath: /logs
+          ports:
+          - name: webtail
+            containerPort: 8080
+        {{- end }}
+        {{- if .Values.webhookRelay.enabled }}
+        - name: webhookrelayd
+          image: {{ .Values.webhookRelay.image.repository }}:{{ .Values.webhookRelay.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/relayd"]
+          env:
+            - name: KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "atlantis.fullname" . }}-webhook-relay
+                  key: key
+            - name: SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "atlantis.fullname" . }}-webhook-relay
+                  key: secret
+            - name: BUCKET
+              value: {{ .Values.webhookRelay.image.bucket }}
+        {{- end }}
+      volumes:
+      {{- if .Values.gitSsh.create -}}
+      - name: {{ template "atlantis.fullname" . }}-secret-ssh-volume
+        secret:
+          secretName: {{ template "atlantis.fullname" . }}-git-ssh
+      {{- end }}
+      {{- if .Values.gitConfig.create }}
+      - name: {{ template "atlantis.fullname" . }}-git-config
+        secret:
+          secretName: {{ template "atlantis.fullname" . }}-git-config
+      {{- end }}
+      {{- if not .Values.persistence.enabled }}
+      - name: "atlantis-data"
+        emptyDir: {}
+      {{- end }}
+      {{- if .Values.serverSide.enabled }}
+      - name: serverside-config
+        configMap:
+          name: {{ template "atlantis.fullname" . }}-serverside-config
+      {{- end }}
+      {{- if .Values.logStreaming.enabled }}
+      - name: logs
+        emptyDir: {}
+      {{- end }}
+  volumeClaimTemplates:
+    {{- if .Values.gitSsh.create -}}
+    - metadata:
+        name: {{ template "atlantis.fullname" . }}-ssh-pv
+        labels:
+          app: {{ template "atlantis.name" . }}
+          chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+          release: "{{ .Release.Name }}"
+          heritage: "{{ .Release.Service }}"
+      spec:
+        accessModes:
+        {{- range .Values.persistence.accessModes }}
+          - {{ . | quote }}
+        {{- end }}
+        resources:
+          requests:
+            storage: 1Gi
+      {{- if .Values.persistence.storageClass }}
+      {{- if (eq "-" .Values.persistence.storageClass) }}
+        storageClassName: ""
+      {{- else }}
+        storageClassName: {{ .Values.persistence.storageClass | quote }}
+      {{- end }}
+      {{- end }}
+    {{- end }}
+    {{- if .Values.persistence.enabled }}
+    - metadata:
+        name: {{ template "atlantis.fullname" . }}-data
+        labels:
+          app: {{ template "atlantis.name" . }}
+          chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+          release: "{{ .Release.Name }}"
+          heritage: "{{ .Release.Service }}"
+      spec:
+        accessModes:
+        {{- range .Values.persistence.accessModes }}
+          - {{ . | quote }}
+        {{- end }}
+        resources:
+          requests:
+            storage: {{ .Values.persistence.size | quote }}
+      {{- if .Values.persistence.storageClass }}
+      {{- if (eq "-" .Values.persistence.storageClass) }}
+        storageClassName: ""
+      {{- else }}
+        storageClassName: {{ .Values.persistence.storageClass | quote }}
+      {{- end }}
+      {{- end }}
+    {{- end }}

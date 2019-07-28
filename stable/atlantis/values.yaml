@@ -1,0 +1,131 @@
+image:
+  repository: runatlantis/atlantis
+  tag: v0.8.3
+  pullPolicy: IfNotPresent
+  # pullSecrets:
+  #   - secret1
+  #   - secret2
+
+logStreaming:
+  enabled: false
+  image:
+    repository: quay.io/gordonbondon/webtail
+    tag: v0.35-rc1
+  service:
+    port: 8080
+  ingress:
+    enabled: false
+    annotations: {}
+    #   kubernetes.io/ingress.class: nginx
+    #   kubernetes.io/tls-acme: 'true'
+
+    # # streaming Ingress additional labels
+    # #
+    extraLabels: {}
+
+    # # streaming Ingress hostnames with optional path
+    # # Must be provided if Ingress is enabled
+    # #
+    hosts: []
+    #   - atlantis.example.com/logs
+
+    # # streaming Ingress TLS configuration
+    # # Secrets must be manually created in the namespace
+    # #
+    tls: []
+    #   - secretName: flagr-tls
+    #     hosts:
+    #       - atlantis.example.com
+
+webhookRelay:
+  enabled: false
+  image:
+    repository: webhookrelay/webhookrelayd
+    tag: "1.16.0"
+  key: "key"
+  secret: "verysecret"
+  bucket: "example"
+
+updateStrategy: RollingUpdate
+terminationGracePeriodSeconds: 30
+replicaCount: 1
+
+service:
+  annotations: {}
+  labels: {}
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  annotations: {}
+  extraLabels: {}
+  path: /
+  hosts:
+  - atlantis.example.com
+  tls: []
+
+config: {}
+  # ATLANTIS_REPO_WHITELIST: gitlab.example.com/devops/terraform-configurations
+secret: {}
+  # ATLANTIS_GITLAB_HOSTNAME: https://gitlab.example.com/
+  # ATLANTIS_GITLAB_WEBHOOK_SECRET: "example"
+  # ATLANTIS_GITLAB_USER: "example"
+  # ATLANTIS_GITLAB_TOKEN: "example"
+gitSsh:
+  create: false
+  # sshConfig: ""
+  # sshPrivateKey: ""
+gitConfig:
+  create: true
+  config: ""
+
+serverSide:
+  enabled: false
+  config: |-
+    repos: []
+  #   - id: /.*/
+  #     apply_requirements: [approved, mergeable]
+  #   ...
+
+tolerations: []
+nodeSelector: {}
+affinity: {}
+
+extraLabels: {}
+extraEnv: {}
+
+podAnnotations: {}
+
+resources: {}
+
+readinessProbe:
+  initialDelaySeconds: 5
+  timeoutSeconds: 1
+  periodSeconds: 15
+livenessProbe:
+  initialDelaySeconds: 15
+  timeoutSeconds: 1
+  periodSeconds: 15
+
+persistence:
+  enabled: true
+
+  ## Atlantis data Persistent Volume Storage Class
+  ## If defined, storageClassName: <storageClass>
+  ## If set to "-", storageClassName: "", which disables dynamic provisioning
+  ## If undefined (the default) or set to null, no storageClassName spec is
+  ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+  ##   GKE, AWS & OpenStack)
+  ##
+  # storageClass: "-"
+  accessModes:
+  - ReadWriteOnce
+  size: 5Gi
+
+rbac:
+  ## If true, create & use RBAC resources
+  create: true
+
+  ## Ignored if rbac.create is true
+  serviceAccountName: default
