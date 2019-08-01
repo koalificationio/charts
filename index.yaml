@@ -2,9 +2,9 @@ apiVersion: v1
 entries:
   atlantis:
   - appVersion: 0.8.3
-    created: 2019-07-28T12:51:00.081057043Z
+    created: 2019-08-01T08:12:59.32410475Z
     description: Atlantis flow for Terraform
-    digest: 3b3cfde28d29097193d40b8f82dc5c52b5ed8f45ccb564548c87f96b2ba0a759
+    digest: 16749b1d7fc42b4ecab8373b7c2e4ba32f8c5901d7848a5865d2406fb1572406
     home: https://github.com/koalificationio/charts
     maintainers:
     - email: artem@koalification.io
@@ -15,9 +15,9 @@ entries:
     version: 0.1.0
   cert-manager-umbrella:
   - appVersion: 0.8.0
-    created: 2019-07-28T12:51:00.083651124Z
+    created: 2019-08-01T08:12:59.3267649Z
     description: cert-manager CRDs and issuers
-    digest: e8f63038b737a0ee53b26612778e44ec8c88f2d5f63bd43540007563162a2279
+    digest: b3b14e387ba97b8aad193e4f516a6c7b2eb583fb4065ea8689c1a77b2986de8f
     home: https://github.com/koalificationio/charts
     maintainers:
     - email: artem@koalification.io
@@ -28,9 +28,9 @@ entries:
     version: 0.1.10
   zalenium:
   - appVersion: 3.141.59
-    created: 2019-07-28T12:51:00.08435592Z
+    created: 2019-08-01T08:12:59.327451735Z
     description: Chart for selenium grid
-    digest: 0352beda6f8595f190e8363230ec63af71d430c464a73e041db43c6efecd30f6
+    digest: 02f820ce7ed409e3ec7ca9dba32a74bca26a797796b0a860056feab4847322b6
     engine: gotpl
     home: https://github.com/zalando/zalenium
     keywords:
@@ -42,6 +42,6 @@ entries:
     sources:
     - https://github.com/zalando/zalenium
     urls:
-    - https://koalificationio.github.io/charts/zalenium-3.141.59-3.tgz
-    version: 3.141.59-3
-generated: 2019-07-28T12:51:00.079771809Z
+    - https://koalificationio.github.io/charts/zalenium-3.141.59-4.tgz
+    version: 3.141.59-4
+generated: 2019-08-01T08:12:59.322878714Z
