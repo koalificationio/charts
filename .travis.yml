@@ -26,6 +26,7 @@ script:
   # Check charts format
   - >
      for dir in `ls ${REPO_DIR}/stable`; do
+      helm dep update ${REPO_DIR}/stable/$dir
       helm lint ${REPO_DIR}/stable/$dir
       if [ $? != 0 ]; then
        travis_terminate 1
