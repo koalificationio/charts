@@ -1,7 +1,0 @@
-version: '3.6'
-services:
-  package:
-    build: .
-    volumes:
-      - "..:/charts"
-    working_dir: /charts
