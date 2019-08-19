@@ -1,27 +1,91 @@
-dist: xenial
-sudo: true
+---
+language: python
 
-install: true
+env:
+  global:
+    - HELM_URL=https://storage.googleapis.com/kubernetes-helm
+    - HELM_TGZ=helm-v2.14.3-linux-amd64.tar.gz
+    - TARGET_BR=gh-pages
+    - REPO_DIR=/home/travis/build/koalificationio/charts
+    - GITHUB_URL=https://koalificationio.github.io/charts
+    - REPO_URL=https://${GITHUB_TOKEN}@github.com/koalificationio/charts.git
+    - YAMLLINT_VERSION=1.17.0
 
-notifications:
-  email: false
-
-services:
-  - docker
+install:
+  # Installing Helm
+  - wget -q ${HELM_URL}/${HELM_TGZ}
+  - tar xzfv ${HELM_TGZ}
+  - PATH=`pwd`/linux-amd64/:$PATH
+  - helm init --client-only
+  # Adding Helm repos for charts in requirements
+  - helm repo add jetstack https://charts.jetstack.io/
+  # Installig pip deps
+  - pip install yamllint=="${YAMLLINT_VERSION}"
 
 script:
-  - make build
+  # Check charts format
+  - >
+     for dir in `ls ${REPO_DIR}/stable`; do
+      helm lint ${REPO_DIR}/stable/$dir
+      if [ $? != 0 ]; then
+       travis_terminate 1
+      fi
+     done
+  # Check YAML styling
+  - yamllint -c .yamllint.yml -s .travis.yml .yamllint.yml
+  - yamllint -c .yamllint.yml -s $(find . -type f -name "Chart.yaml")
+  - yamllint -c .yamllint.yml -s $(find . -type f -name "values.yaml")
 
-branches:
-  only:
-  - master
+after_success:
+  - >
+    if [ $TRAVIS_BRANCH = 'master' ] && [ $TRAVIS_PULL_REQUEST = 'false' ]; then
+      # Temporary dir for storing new packaged charts and index files
+      BUILD_DIR=$(mktemp -d)
 
-deploy:
-  - provider: pages
-    skip_cleanup: true
-    github_token: $GITHUB_TOKEN
-    keep_history: true
-    local_dir: dist-repo
-    committer_from_gh: true
-    on:
-      branch: master
+      # Push temporary directory to the stack
+      pushd $BUILD_DIR
+
+      # Iterate over all charts are package them
+      for dir in `ls ${REPO_DIR}/stable`; do
+       helm dep update ${REPO_DIR}/stable/$dir
+       helm package ${REPO_DIR}/stable/$dir
+      done
+
+      # Indexing of charts
+      if [ -f index.yaml ]; then
+       helm repo index --url ${GITHUB_URL} --merge index.yaml .
+      else
+       helm repo index --url ${GITHUB_URL} .
+      fi
+
+      # Pop temporary directory from the stack
+      popd
+
+      # List all the contents that we will push
+      ls ${BUILD_DIR}
+
+      # Clone repository and empty target branch
+      git clone ${REPO_URL} out
+      cd out
+      git checkout ${TARGET_BR} || git checkout --orphan ${TARGET_BR}
+      cd ..
+      rm -rf out/* || exit 0
+
+      # Copying contents of BUILD_DIR to out folder
+      cp $BUILD_DIR/* out/
+      cd out
+
+      # Deploy if there are some changes
+      git diff --quiet
+      if [ $? != 0 ]; then
+       # Add all new files to staging phase and commit the changes
+       SHA=`git rev-parse --verify HEAD`
+       git config user.name "Travis CI"
+       git config user.email "travis@travis-ci.org"
+       git add -A .
+       git status
+       git commit -m "Deploy koalificationio/charts to GitHub Pages"
+       # We can push.
+       git push ${REPO_URL}
+      fi
+    fi
