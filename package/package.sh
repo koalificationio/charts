@@ -30,7 +30,7 @@ for chart in ./stable/*; do
     chart_basename=$(basename "${chart}")
     helm inspect "${CHART_REPO_NAME}/${chart_basename}" --version "${chart_version}" > /dev/null
     if [[ "$?" -eq "0" ]]; then
-      notify "Skipping chart ${chart%/} ${chart_version} as it already exists in ${CHART_REPO_URL}"
+      echo "--- Skipping chart ${chart%/} ${chart_version} as it already exists in ${CHART_REPO_URL}"
     else
       set -e
       echo "--- Packaging ${chart} into ${BUILD_DIR}"
@@ -38,8 +38,6 @@ for chart in ./stable/*; do
       helm package --destination "${BUILD_DIR}" "${chart}"
     fi
 done
-
-ls "${BUILD_DIR}"
 
 pushd "${BUILD_DIR}"
 echo "--- Reindexing ${BUILD_DIR}"
