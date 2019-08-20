@@ -1,6 +1,6 @@
 CHART_REPO_NAME = koalificationio
 CHART_REPO_URL = https://koalificationio.github.io/charts
-UPSTREAM_GIT_REPO = "${CHART_REGISTRY_NAME}/charts.git"
+UPSTREAM_GIT_REPO = "${CHART_REPO_NAME}/charts.git"
 CT_IMAGE = gcr.io/kubernetes-charts-ci/test-image:v3.3.2
 COMMIT = $(shell git rev-parse --short HEAD)
 
