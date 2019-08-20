@@ -20,6 +20,7 @@ helm repo add "${CHART_REPO_NAME}" "${CHART_REPO_URL}"
 helm repo add jetstack https://charts.jetstack.io/
 
 mkdir -p "${BUILD_DIR}"
+BUILD_TEMP_DIR=$(mktemp -d)
 
 for chart in ./stable/*; do
   chart_version=$(grep version "${chart}"/Chart.yaml | awk '{print $2}')
@@ -30,21 +31,21 @@ for chart in ./stable/*; do
       echo "--- Skipping chart ${chart%/} ${chart_version} as it already exists in ${CHART_REPO_URL}"
     else
       set -e
-      echo "--- Packaging ${chart} into ${BUILD_DIR}"
+      echo "--- Packaging ${chart} into ${BUILD_TEMP_DIR}"
       helm dep update "${chart}" || true
-      helm package --destination "${BUILD_DIR}" "${chart}"
+      helm package "${chart}" --destination "${BUILD_TEMP_DIR}"
     fi
 done
-ls "${BUILD_DIR}"
+ls "${BUILD_TEMP_DIR}"
 
 git clone "https://${GITHUB_USER:-$DEFAULT_GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GIT_REPO}" out
 pushd out
 git checkout "${TARGET_BRANCH}" || git checkout --orphan "${TARGET_BRANCH}"
-cp index.yaml "${BUILD_DIR}" || true
+cp index.yaml "${BUILD_TEMP_DIR}" || true
 popd
 
-pushd "${BUILD_DIR}"
-echo "--- Reindexing ${BUILD_DIR}"
+pushd "${BUILD_TEMP_DIR}"
+echo "--- Reindexing ${BUILD_TEMP_DIR}"
 if [ -f index.yaml ]; then
   helm repo index --url "${CHART_REPO_URL}" --merge index.yaml .
 else
@@ -52,4 +53,5 @@ else
 fi
 popd
 
-cp "${BUILD_DIR}"/* out/
+cp -r "${BUILD_TEMP_DIR}"/* out/
+cp -r out/* "${BUILD_DIR}"
