@@ -13,20 +13,17 @@ helm init --client-only
 helm repo add jetstack https://charts.jetstack.io/
 
 mkdir -p "${BUILD_DIR}"
-pushd "${BUILD_DIR}"
 for chart in ./stable/*; do
   echo "--- Packaging ${chart} into ${BUILD_DIR}"
   helm dep update "${chart}" || true
   helm package --destination "${BUILD_DIR}" "${chart}"
 done
-popd
 ls "${BUILD_DIR}"
 
 git clone "${REPO_URL}" out
 cd out
 git checkout "${TARGET_BRANCH}" || git checkout --orphan ${TARGET_BRANCH}
 cd ..
-
 
 cp out/index.yaml "${BUILD_DIR}" || true
 pushd "${BUILD_DIR}"
