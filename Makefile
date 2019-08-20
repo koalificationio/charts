@@ -1,5 +1,6 @@
-UPSTREAM_GIT_REPO = koalificationio/charts.git
-CHARTS_URL = https://koalificationio.github.io/charts
+CHART_REPO_NAME = koalificationio
+CHART_REPO_URL = https://koalificationio.github.io/charts
+UPSTREAM_GIT_REPO = "${CHART_REGISTRY_NAME}/charts.git"
 CT_IMAGE = gcr.io/kubernetes-charts-ci/test-image:v3.3.2
 COMMIT = $(shell git rev-parse --short HEAD)
 
@@ -23,4 +24,4 @@ build: lint
 	cd package && \
 		docker-compose build && \
 		docker-compose run --rm package ./package/package.sh \
-		"${CHARTS_URL}" "${UPSTREAM_GIT_REPO}" ${GITHUB_TOKEN} dist-repo
+		"${CHART_REPO_NAME}" "${CHART_REPO_URL}" "${UPSTREAM_GIT_REPO}" ${GITHUB_TOKEN} dist-repo
