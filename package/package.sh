@@ -19,10 +19,14 @@ helm init --client-only
 helm repo add "${CHART_REPO_NAME}" "${CHART_REPO_URL}"
 helm repo add jetstack https://charts.jetstack.io/
 
+<<<<<<< Updated upstream
 git clone "https://${GITHUB_USER:-$DEFAULT_GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GIT_REPO}" "${BUILD_DIR}"
 pushd "${BUILD_DIR}"
 git checkout "${TARGET_BRANCH}" || git checkout --orphan "${TARGET_BRANCH}"
 popd
+=======
+mkdir -p "${BUILD_DIR}"
+>>>>>>> Stashed changes
 
 for chart in ./stable/*; do
   chart_version=$(grep version "${chart}"/Chart.yaml | awk '{print $2}')
