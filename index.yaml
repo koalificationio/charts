@@ -1,3 +1,63 @@
 apiVersion: v1
-entries: {}
-generated: 2019-08-20T13:22:20.204433249Z
+entries:
+  atlantis:
+  - appVersion: 0.8.3
+    created: 2019-08-20T14:01:23.034109909Z
+    description: Atlantis flow for Terraform
+    digest: 4925b303d968cbc1b135ed9485315748004b211ea3b43722e13f1f3836e0be9f
+    home: https://github.com/koalificationio/charts
+    maintainers:
+    - email: artem@koalification.io
+      name: gordonbondon
+    name: atlantis
+    urls:
+    - https://koalificationio.github.io/charts/atlantis-0.1.0.tgz
+    version: 0.1.0
+  cert-manager-umbrella:
+  - appVersion: 0.8.0
+    created: 2019-08-20T14:01:23.036060866Z
+    description: cert-manager CRDs and issuers
+    digest: 932b5cc7a9b59f3cf30e5f5425ea18be44bf71358d8686cfa81d2785fd820ea4
+    home: https://github.com/koalificationio/charts
+    maintainers:
+    - email: artem@koalification.io
+      name: gordonbondon
+    name: cert-manager-umbrella
+    urls:
+    - https://koalificationio.github.io/charts/cert-manager-umbrella-0.1.10.tgz
+    version: 0.1.10
+  mock-chart:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: 2019-08-20T14:01:23.036407996Z
+    description: A Helm chart for Kubernetes
+    digest: 84e6d16cfe910fc47770471a6d638ff77f8b880e8573937d1b24a3f422f6ef27
+    home: https://github.com/koalificationio/charts
+    maintainers:
+    - email: igor@koalification.io
+      name: hatemosphere
+    name: mock-chart
+    sources:
+    - https://github.com/koalificationio/charts
+    urls:
+    - https://koalificationio.github.io/charts/mock-chart-0.1.0.tgz
+    version: 0.1.0
+  zalenium:
+  - appVersion: 3.141.59
+    created: 2019-08-20T14:01:23.037081576Z
+    description: Chart for selenium grid
+    digest: e06d7ac3f4254468210b1513e3b08c4fca5bf841f742101a07eafb3eb61499db
+    engine: gotpl
+    home: https://github.com/zalando/zalenium
+    keywords:
+    - qa
+    maintainers:
+    - email: diemol@gmail.com
+      name: diemol
+    name: zalenium
+    sources:
+    - https://github.com/zalando/zalenium
+    urls:
+    - https://koalificationio.github.io/charts/zalenium-3.141.59-4.tgz
+    version: 3.141.59-4
+generated: 2019-08-20T14:01:23.032667797Z
