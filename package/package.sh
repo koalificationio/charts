@@ -20,7 +20,7 @@ for chart in ./stable/*; do
 done
 ls "${BUILD_DIR}"
 
-git clone "${REPO_URL}" out
+git clone "${HELM_REPO_URL}" out
 cd out
 git checkout "${TARGET_BRANCH}" || git checkout --orphan ${TARGET_BRANCH}
 cd ..
