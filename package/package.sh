@@ -19,10 +19,7 @@ helm init --client-only
 helm repo add "${CHART_REPO_NAME}" "${CHART_REPO_URL}"
 helm repo add jetstack https://charts.jetstack.io/
 
-git clone "https://${GITHUB_USER:-$DEFAULT_GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GIT_REPO}" "${BUILD_DIR}"
-pushd "${BUILD_DIR}"
-git checkout "${TARGET_BRANCH}" || git checkout --orphan "${TARGET_BRANCH}"
-popd
+mkdir -p "${BUILD_DIR}"
 
 for chart in ./stable/*; do
   chart_version=$(grep version "${chart}"/Chart.yaml | awk '{print $2}')
@@ -38,6 +35,13 @@ for chart in ./stable/*; do
       helm package --destination "${BUILD_DIR}" "${chart}"
     fi
 done
+ls "${BUILD_DIR}"
+
+git clone "https://${GITHUB_USER:-$DEFAULT_GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GIT_REPO}" out
+pushd out
+git checkout "${TARGET_BRANCH}" || git checkout --orphan "${TARGET_BRANCH}"
+cp index.yaml "${BUILD_DIR}" || true
+popd
 
 pushd "${BUILD_DIR}"
 echo "--- Reindexing ${BUILD_DIR}"
@@ -47,3 +51,5 @@ else
   helm repo index --url "${CHART_REPO_URL}" .
 fi
 popd
+
+cp "${BUILD_DIR}"/* out/
