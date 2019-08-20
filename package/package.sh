@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
-# USAGE: package.sh <helm-repo-url> <output-dir>
+# USAGE: package.sh <helm-repo-url> <git-repo> <output-dir>
+# GITHUB_USER and GITHUB_TOKEN environment variables should contain valid username and token to clone chart repo
 
 set -euo pipefail
 
 HELM_REPO_URL="$1"
-BUILD_DIR="$2"
+GIT_REPO="$2"
+BUILD_DIR="$3"
+DEFAULT_GITHUB_USER=koalificationio-bot
 TARGET_BRANCH=gh-pages
 
 helm init --client-only
@@ -20,9 +23,9 @@ for chart in ./stable/*; do
 done
 ls "${BUILD_DIR}"
 
-git clone "${HELM_REPO_URL}" out
+git clone "https://${GITHUB_USER:-$DEFAULT_GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GIT_REPO}" out
 cd out
-git checkout "${TARGET_BRANCH}" || git checkout --orphan ${TARGET_BRANCH}
+git checkout "${TARGET_BRANCH}" || git checkout --orphan "${TARGET_BRANCH}"
 cd ..
 
 cp out/index.yaml "${BUILD_DIR}" || true
