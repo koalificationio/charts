@@ -24,7 +24,8 @@ popd
 for chart in ./stable/*; do
   chart_version=$(grep version "${chart}"/Chart.yaml | awk '{print $2}')
   set +e
-    helm inspect "${HELM_REPO_URL}/${chart}" --version "${chart_version}" > /dev/null
+    chart_basename=$(basename "${chart}")
+    helm inspect "${HELM_REPO_URL}/${chart_basename}" --version "${chart_version}" > /dev/null
     if [[ "$?" -eq "0" ]]; then
       notify "Skipping chart ${chart%/} ${chart_version} as it already exists in ${HELM_REPO_URL}"
     else
