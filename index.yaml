@@ -2,9 +2,9 @@ apiVersion: v1
 entries:
   atlantis:
   - appVersion: 0.8.3
-    created: 2019-08-01T08:12:59.32410475Z
+    created: 2019-08-20T10:08:10.340903188Z
     description: Atlantis flow for Terraform
-    digest: 16749b1d7fc42b4ecab8373b7c2e4ba32f8c5901d7848a5865d2406fb1572406
+    digest: 8144ce7617a916537c8924b92c88e68df62bd20f0b7c6e1a39214e13f9e07404
     home: https://github.com/koalificationio/charts
     maintainers:
     - email: artem@koalification.io
@@ -15,9 +15,9 @@ entries:
     version: 0.1.0
   cert-manager-umbrella:
   - appVersion: 0.8.0
-    created: 2019-08-01T08:12:59.3267649Z
+    created: 2019-08-20T10:08:10.343184731Z
     description: cert-manager CRDs and issuers
-    digest: b3b14e387ba97b8aad193e4f516a6c7b2eb583fb4065ea8689c1a77b2986de8f
+    digest: ee1fdf508bd021fa9d18ffd1f7a0d6500a04289e77c0d6079d3fcb3f5edb428a
     home: https://github.com/koalificationio/charts
     maintainers:
     - email: artem@koalification.io
@@ -26,11 +26,27 @@ entries:
     urls:
     - https://koalificationio.github.io/charts/cert-manager-umbrella-0.1.10.tgz
     version: 0.1.10
+  mock-chart:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: 2019-08-20T10:08:10.343516545Z
+    description: A Helm chart for Kubernetes
+    digest: 8df2be8234f520215a678673596a5a72e5873483b73eeeb1693e465a4b84f4ab
+    home: https://github.com/koalificationio/charts
+    maintainers:
+    - email: igor@koalification.io
+      name: hatemosphere
+    name: mock-chart
+    sources:
+    - https://github.com/koalificationio/charts
+    urls:
+    - https://koalificationio.github.io/charts/mock-chart-0.1.0.tgz
+    version: 0.1.0
   zalenium:
   - appVersion: 3.141.59
-    created: 2019-08-01T08:12:59.327451735Z
+    created: 2019-08-20T10:08:10.344182687Z
     description: Chart for selenium grid
-    digest: 02f820ce7ed409e3ec7ca9dba32a74bca26a797796b0a860056feab4847322b6
+    digest: dadd9337a9f57f7cae5312c9f8a0e8faca9d57faf3f8c9e911fd693a208e6650
     engine: gotpl
     home: https://github.com/zalando/zalenium
     keywords:
@@ -44,4 +60,4 @@ entries:
     urls:
     - https://koalificationio.github.io/charts/zalenium-3.141.59-4.tgz
     version: 3.141.59-4
-generated: 2019-08-01T08:12:59.322878714Z
+generated: 2019-08-20T10:08:10.339677241Z
