@@ -14,7 +14,7 @@ helm repo add jetstack https://charts.jetstack.io/
 
 mkdir -p "${BUILD_DIR}"
 pushd "${BUILD_DIR}"
-for chart in ./charts/*; do
+for chart in ./stable/*; do
   echo "--- Packaging ${chart} into ${BUILD_DIR}"
   helm dep update "${chart}" || true
   helm package --destination "${BUILD_DIR}" "${chart}"
