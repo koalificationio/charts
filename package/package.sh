@@ -32,8 +32,8 @@ for chart in ./stable/*; do
     else
       set -e
       echo "--- Packaging ${chart} into ${BUILD_DIR}"
-      helm dep update || true
-      helm package --destination "${BUILD_DIR}"
+      helm dep update . || true
+      helm package --destination "${BUILD_DIR}" .
       popd
     fi
 done
