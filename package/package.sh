@@ -24,13 +24,13 @@ for chart in ./stable/*; do
 done
 ls "${BUILD_DIR}"
 
+pushd "${BUILD_DIR}"
 git clone "https://${GITHUB_USER:-$DEFAULT_GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GIT_REPO}" out
-cd out
+pushd "${BUILD_DIR}/out"
 git checkout "${TARGET_BRANCH}" || git checkout --orphan "${TARGET_BRANCH}"
-cd ..
+popd
 
 cp out/index.yaml "${BUILD_DIR}" || true
-pushd "${BUILD_DIR}"
 echo "--- Reindexing ${BUILD_DIR}"
 if [ -f index.yaml ]; then
   helm repo index --url "${HELM_REPO_URL}" --merge index.yaml .
@@ -39,4 +39,4 @@ else
 fi
 popd
 
-cp "${BUILD_DIR}"/* out/
+cp "${BUILD_DIR}"/* "${BUILD_DIR}/out/"
