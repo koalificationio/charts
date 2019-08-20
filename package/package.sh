@@ -19,10 +19,9 @@ helm init --client-only
 helm repo add "${CHART_REPO_NAME}" "${CHART_REPO_URL}"
 helm repo add jetstack https://charts.jetstack.io/
 
-# Creating /BUILD_TEMP_DIR/ dir
+mkdir -p "${BUILD_DIR}"
 BUILD_TEMP_DIR=$(mktemp -d)
 
-# Packaging new charts to /BUILD_TEMP_DIR/
 for chart in ./stable/*; do
   chart_version=$(grep version "${chart}"/Chart.yaml | awk '{print $2}')
   set +e
