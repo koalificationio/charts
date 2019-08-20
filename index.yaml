@@ -28,6 +28,21 @@ entries:
     version: 0.1.10
   mock-chart:
   - apiVersion: v1
+    appVersion: 1.0.1
+    created: 2019-08-20T14:10:28.47851394Z
+    description: A Helm chart for Kubernetes
+    digest: 699f500bc668324ddbdb87cc3a39865f9fcda59468436924bbfb146c462b4d6c
+    home: https://github.com/koalificationio/charts
+    maintainers:
+    - email: igor@koalification.io
+      name: hatemosphere
+    name: mock-chart
+    sources:
+    - https://github.com/koalificationio/charts
+    urls:
+    - https://koalificationio.github.io/charts/mock-chart-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v1
     appVersion: "1.0"
     created: 2019-08-20T14:01:23.036407996Z
     description: A Helm chart for Kubernetes
@@ -60,4 +75,4 @@ entries:
     urls:
     - https://koalificationio.github.io/charts/zalenium-3.141.59-4.tgz
     version: 3.141.59-4
-generated: 2019-08-20T14:01:23.032667797Z
+generated: 2019-08-20T14:10:28.477424336Z
