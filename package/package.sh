@@ -39,4 +39,4 @@ else
 fi
 popd
 
-cp "${BUILD_DIR}"/* "${BUILD_DIR}/out/"
+cp -r "${BUILD_DIR}"/* "${BUILD_DIR}/out/"
