@@ -2,9 +2,9 @@ apiVersion: v1
 entries:
   atlantis:
   - appVersion: 0.8.3
-    created: 2019-08-20T10:08:10.340903188Z
+    created: 2019-08-20T11:28:48.568497449Z
     description: Atlantis flow for Terraform
-    digest: 8144ce7617a916537c8924b92c88e68df62bd20f0b7c6e1a39214e13f9e07404
+    digest: 5d532eb218c79232b78fd5ae86a350f5b24623b749e62e0ddd6d8618ffb32b5e
     home: https://github.com/koalificationio/charts
     maintainers:
     - email: artem@koalification.io
@@ -15,9 +15,9 @@ entries:
     version: 0.1.0
   cert-manager-umbrella:
   - appVersion: 0.8.0
-    created: 2019-08-20T10:08:10.343184731Z
+    created: 2019-08-20T11:28:48.57124035Z
     description: cert-manager CRDs and issuers
-    digest: ee1fdf508bd021fa9d18ffd1f7a0d6500a04289e77c0d6079d3fcb3f5edb428a
+    digest: 73b1768bae10a4a65ece9bbc2795b7ab22aa5e455f21a634f8e1f2c12e6dfacc
     home: https://github.com/koalificationio/charts
     maintainers:
     - email: artem@koalification.io
@@ -29,9 +29,9 @@ entries:
   mock-chart:
   - apiVersion: v1
     appVersion: "1.0"
-    created: 2019-08-20T10:08:10.343516545Z
+    created: 2019-08-20T11:28:48.571582254Z
     description: A Helm chart for Kubernetes
-    digest: 8df2be8234f520215a678673596a5a72e5873483b73eeeb1693e465a4b84f4ab
+    digest: e1d399e3b6bb0cb84d7a76d4f76dc8350b88e064f182261c81b271f639e7540f
     home: https://github.com/koalificationio/charts
     maintainers:
     - email: igor@koalification.io
@@ -44,9 +44,9 @@ entries:
     version: 0.1.0
   zalenium:
   - appVersion: 3.141.59
-    created: 2019-08-20T10:08:10.344182687Z
+    created: 2019-08-20T11:28:48.572294876Z
     description: Chart for selenium grid
-    digest: dadd9337a9f57f7cae5312c9f8a0e8faca9d57faf3f8c9e911fd693a208e6650
+    digest: c889912619eb055af9dbb0e0d43094e6da36ed3e3be95ae3fb2e241719dbb728
     engine: gotpl
     home: https://github.com/zalando/zalenium
     keywords:
@@ -60,4 +60,4 @@ entries:
     urls:
     - https://koalificationio.github.io/charts/zalenium-3.141.59-4.tgz
     version: 3.141.59-4
-generated: 2019-08-20T10:08:10.339677241Z
+generated: 2019-08-20T11:28:48.567025479Z
