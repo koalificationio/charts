@@ -4,25 +4,38 @@
 set -euo pipefail
 
 HELM_REPO_URL="$1"
-OUTPUT_DIR="$2"
+BUILD_DIR="$2"
+TARGET_BRANCH=gh-pages
 
 helm init --client-only
 
 # add helm repos for charts in requirements
 helm repo add jetstack https://charts.jetstack.io/
 
-mkdir -p "${OUTPUT_DIR}"
-
-for chart in ./stable/*; do
-  echo "--- Packaging $chart into $OUTPUT_DIR"
-  helm dep update "$chart" || true
-  helm package --destination "$OUTPUT_DIR" "$chart"
+mkdir -p "${BUILD_DIR}"
+pushd "${BUILD_DIR}"
+for chart in ./charts/*; do
+  echo "--- Packaging ${chart} into ${BUILD_DIR}"
+  helm dep update "${chart}" || true
+  helm package --destination "${BUILD_DIR}" "${chart}"
 done
+popd
+ls "${BUILD_DIR}"
 
-echo "--- Reindexing $OUTPUT_DIR"
+git clone "${REPO_URL}" out
+cd out
+git checkout "${TARGET_BRANCH}" || git checkout --orphan ${TARGET_BRANCH}
+cd ..
+
+
+cp out/index.yaml "${BUILD_DIR}" || true
+pushd "${BUILD_DIR}"
+echo "--- Reindexing ${BUILD_DIR}"
 if [ -f index.yaml ]; then
-  helm repo index --url "$HELM_REPO_URL" --merge index.yaml "$OUTPUT_DIR"
+  helm repo index --url "${HELM_REPO_URL}" --merge index.yaml .
 else
-  helm repo index --url "$HELM_REPO_URL" "$OUTPUT_DIR"
+  helm repo index --url "${HELM_REPO_URL}" .
 fi
-ls "$OUTPUT_DIR"
+popd
+
+cp "${BUILD_DIR}"/* out/
