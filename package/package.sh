@@ -4,8 +4,8 @@
 
 set -euo pipefail
 
-CHART_REPO_URL="$1"
-CHART_REPO_NAME="$2"
+CHART_REPO_NAME="$1"
+CHART_REPO_URL="$2"
 GIT_REPO="$3"
 GITHUB_TOKEN="$4"
 BUILD_DIR="$5"
