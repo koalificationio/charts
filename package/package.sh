@@ -6,7 +6,8 @@ set -euo pipefail
 
 HELM_REPO_URL="$1"
 GIT_REPO="$2"
-BUILD_DIR="$3"
+GITHUB_TOKEN="$3"
+BUILD_DIR="$4"
 DEFAULT_GITHUB_USER=koalificationio-bot
 TARGET_BRANCH=gh-pages
 
