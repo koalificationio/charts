@@ -1,4 +1,4 @@
-dist: xenial
+dist: bionic
 sudo: true
 
 install: true
@@ -21,7 +21,7 @@ deploy:
     skip_cleanup: true
     github_token: $GITHUB_TOKEN
     keep_history: true
-    local_dir: dist-repo
+    local_dir: dist-repo/out
     committer_from_gh: true
     on:
       branch: master
