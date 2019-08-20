@@ -2,7 +2,7 @@ apiVersion: v1
 entries:
   atlantis:
   - appVersion: 0.8.3
-    created: 2019-08-20T12:17:53.382359223Z
+    created: 2019-08-20T12:25:01.273576199Z
     description: Atlantis flow for Terraform
     digest: ae474107f837fd0d0a460cbff986b0d7c651ab0a7b29d2d54cefa251c7f81e0b
     home: https://github.com/koalificationio/charts
@@ -15,7 +15,7 @@ entries:
     version: 0.1.0
   cert-manager-umbrella:
   - appVersion: 0.8.0
-    created: 2019-08-20T12:17:53.384739801Z
+    created: 2019-08-20T12:25:01.283301951Z
     description: cert-manager CRDs and issuers
     digest: 66b0e5b2754c46d0658c0ef7f601d714106c7c2b85234cebb9fcea222a362345
     home: https://github.com/koalificationio/charts
@@ -29,7 +29,7 @@ entries:
   mock-chart:
   - apiVersion: v1
     appVersion: "1.0"
-    created: 2019-08-20T12:17:53.385076971Z
+    created: 2019-08-20T12:25:01.284339088Z
     description: A Helm chart for Kubernetes
     digest: d29188ba3b116492f2ae4f53fd92b0afe18491f063e7239789c0d478882711a3
     home: https://github.com/koalificationio/charts
@@ -44,7 +44,7 @@ entries:
     version: 0.1.0
   zalenium:
   - appVersion: 3.141.59
-    created: 2019-08-20T12:17:53.385735582Z
+    created: 2019-08-20T12:25:01.286613227Z
     description: Chart for selenium grid
     digest: 47c09c19f778da521bc7c61e3ead106d83471587bf111036111c09dc1bbc19ba
     engine: gotpl
@@ -60,4 +60,4 @@ entries:
     urls:
     - https://koalificationio.github.io/charts/zalenium-3.141.59-4.tgz
     version: 3.141.59-4
-generated: 2019-08-20T12:17:53.381083982Z
+generated: 2019-08-20T12:25:01.27133949Z
