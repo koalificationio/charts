@@ -22,10 +22,19 @@ git checkout "${TARGET_BRANCH}" || git checkout --orphan "${TARGET_BRANCH}"
 popd
 
 for chart in ./stable/*; do
-  echo "--- Packaging ${chart} into ${BUILD_DIR}"
-  helm dep update "${chart}" || true
-  helm package --destination "${BUILD_DIR}" "${chart}"
+  chart_version=$(grep version "${chart}"/Chart.yaml | awk '{print $2}')
+  set +e
+    helm inspect "${HELM_REPO_URL}/${chart}" --version "${chart_version}" > /dev/null
+    if [[ "$?" -eq "0" ]]; then
+      notify "Skipping chart ${chart%/} ${chart_version} as it already exists in ${HELM_REPO_URL}"
+    else
+      set -e
+      echo "--- Packaging ${chart} into ${BUILD_DIR}"
+      helm dep update "${chart}" || true
+      helm package --destination "${BUILD_DIR}" "${chart}"
+    fi
 done
+
 ls "${BUILD_DIR}"
 
 pushd "${BUILD_DIR}"
