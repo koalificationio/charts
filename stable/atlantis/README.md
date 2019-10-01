@@ -1,3 +1,5 @@
+*Deprecated in most of use cases after https://github.com/runatlantis/atlantis/pull/711 was merged*
+
 1. Make sure that secret {{ template "atlantis.fullname" . }}-git-ssh exists in the same namespace with Atlantis if you're not using gitSSh create from values. It can be created with this command:
 
 ```bash
