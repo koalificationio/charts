@@ -1,6 +1,6 @@
 image:
   repository: runatlantis/atlantis
-  tag: v0.8.3
+  tag: v0.9.0
   pullPolicy: IfNotPresent
   # pullSecrets:
   #   - secret1
@@ -41,7 +41,7 @@ webhookRelay:
   enabled: false
   image:
     repository: webhookrelay/webhookrelayd
-    tag: "1.16.0"
+    tag: "1.18.1"
   key: "key"
   secret: "verysecret"
   bucket: "example"
