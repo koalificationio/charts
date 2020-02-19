@@ -1,6 +1,6 @@
 image:
   repository: runatlantis/atlantis
-  tag: v0.9.0
+  tag: v0.11.1
   pullPolicy: IfNotPresent
   # pullSecrets:
   #   - secret1
