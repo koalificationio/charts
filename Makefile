@@ -1,7 +1,7 @@
 CHART_REPO_NAME = koalificationio
 CHART_REPO_URL = https://koalificationio.github.io/charts
 UPSTREAM_GIT_REPO = "${CHART_REPO_NAME}/charts.git"
-CT_IMAGE = gcr.io/kubernetes-charts-ci/test-image:v3.3.2
+CT_IMAGE = quay.io/helmpack/chart-testing:v3.0.0-rc.1
 COMMIT = $(shell git rev-parse --short HEAD)
 
 .PHONY: lint shellcheck clean build publish

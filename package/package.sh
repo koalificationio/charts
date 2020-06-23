@@ -13,8 +13,6 @@ BUILD_DIR="$5"
 DEFAULT_GITHUB_USER=koalificationio-bot
 TARGET_BRANCH=gh-pages
 
-helm init --client-only
-
 # add own helm chart repo and repos for charts in requirements
 helm repo add "${CHART_REPO_NAME}" "${CHART_REPO_URL}"
 helm repo add jetstack https://charts.jetstack.io/
