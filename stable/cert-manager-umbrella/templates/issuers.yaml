@@ -1,7 +1,7 @@
 {{ $root := . }}
 {{- range .Values.issuers }}
 ---
-apiVersion: certmanager.k8s.io/v1alpha1
+apiVersion: cert-manager.io/v1alpha3
 kind: {{ .kind }}
 metadata:
   labels:
