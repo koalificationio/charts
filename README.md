@@ -2,6 +2,12 @@
 
 Some missing/fixed helm charts we've created that made no sense to be contributed upstream.
 
+## Charts
+
+* [`atlantis`](./stable/atlantis/) - run [Atlantis](https://www.runatlantis.io/) in k8s
+* [`cert-manager-umbrella`](./stable/cert-manager-umbrella/) - wraps [official helm chart](https://github.com/jetstack/cert-manager/tree/master/deploy/charts/cert-manager) and add CRD instllation.
+* [`zalenium`](./stable/zalenium/) - install [Zalenium](https://opensource.zalando.com/zalenium/)
+
 ## Getting Started
 
 ### Install Helm
